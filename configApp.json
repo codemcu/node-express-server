@@ -1,0 +1,12 @@
+{
+    "development": {
+        "db_host": "localhost",
+        "db_user": "root",
+        "db_pass": "root"
+    },
+    "production": {
+        "db_host": "192.xxx.x.x",
+        "db_user": "user",
+        "db_pass": ""
+    }
+}

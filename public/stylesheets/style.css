@@ -1,0 +1,17 @@
+body{
+  font-family: 'Oswald', sans-serif;
+}
+#content {
+  width: 220px;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 4px #ccc;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+.project {
+  font-family: 'Sedgwick Ave Display', cursive;
+}
