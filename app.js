@@ -3,8 +3,49 @@
 var http = require('http');
 var express = require('express');
 var iniparser = require('iniparser');
+var mysql = require('mysql');
 
 var config = iniparser.parseSync('./config.ini');
+
+function mySQLConn() {
+  return mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'libros'
+  })
+}
+
+var conn = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'libros'
+});
+
+conn.connect((err) => {
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
+});
+
+conn.query('SELECT * FROM libro', (err, rows) => {
+  if(err) throw err;
+
+  rows.forEach( (row) => { 
+    console.log(`El autor de "${row.titulo}" es ${row.autor}`); 
+  });
+
+  // console.log(rows);
+});
+
+conn.end((err) => {
+  // The connection is terminated ok
+});
+
+
 
 var app = express();
 
@@ -47,7 +88,6 @@ app.get('/', function (req, res) {
     message: config.message
   });
 });
-
 
 
 http.createServer(app).listen(3000, function () {
