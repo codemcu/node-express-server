@@ -16,37 +16,6 @@ function mySQLConn() {
   })
 }
 
-var conn = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'libros'
-});
-
-conn.connect((err) => {
-  if(err){
-    console.log('Error connecting to Db');
-    return;
-  }
-  console.log('Connection established');
-});
-
-conn.query('SELECT * FROM libro', (err, rows) => {
-  if(err) throw err;
-
-  rows.forEach( (row) => { 
-    console.log(`El autor de "${row.titulo}" es ${row.autor}`); 
-  });
-
-  // console.log(rows);
-});
-
-conn.end((err) => {
-  // The connection is terminated ok
-});
-
-
-
 var app = express();
 
 app.set('view engine', 'jade');
@@ -87,6 +56,34 @@ app.get('/', function (req, res) {
     title: config.title,
     message: config.message
   });
+
+  var librosList = [];
+  var conn = mySQLConn();
+  conn.connect();
+
+  conn.query('SELECT * FROM libro', (err, rows) => {
+    if (err) {
+      console.log('Error connecting to Db');
+      return;
+    } else {
+      console.log('Connection established');
+      rows.forEach((row) => {
+        var libro = {
+          id_libro: row.id_libro ,
+          titulo: row.titulo ,
+          autor: row.autor ,
+          isbn: row.isbn ,
+          numero_paginas: row.numero_paginas ,
+          genero: row.genero ,
+        }
+        librosList.push(libro);
+      });
+    } 
+    res.render('index', {
+      librosList: librosList
+    });
+  });
+  // conn.end(err);
 });
 
 
